@@ -49,7 +49,7 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
         return "<style>table, th, td {border:1px solid black;}</style>" + add_tags('table', html_columns + html_values)
     except:
-        return f"Object with id = {item_id} don't exists"
+        return f"Object with id = '{item_id}' don't exists"
 
 
 @app.put("/items/name={item_name}&price={item_price}&is_offer={item_is_offer}")
@@ -60,13 +60,19 @@ def create_item(item_name: str, item_price: float, item_is_offer: bool):
     'item_price': item_price, 
     'item_is_offer': item_is_offer
     }
-
     json_file = 'database.json'
+
+
 
     with open(json_file) as json_file:
         json_decoded = json.load(json_file)
 
     item_id = json_decoded['id'] + 1
+
+    for i in range(1, item_id):
+        if item_name == json_decoded[str(i)]["item_name"]:
+            return f"Object with name = '{item_name}' already exists"
+        
     json_decoded['id'] += 1
 
     json_decoded[item_id] = data
