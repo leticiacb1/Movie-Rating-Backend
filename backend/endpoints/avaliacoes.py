@@ -3,7 +3,7 @@ from backend.models.base_models import Avaliacao
 from fastapi import status
 import json
 
-from ..services.utils_avaliacoes import get_all_rating , create_rating
+from ..services.utils_avaliacoes import get_all_rating , create_rating, delete_rating
 
 router = APIRouter()
 
@@ -16,3 +16,8 @@ async def get_all_avaliacoes():
 async def cadastra_avaliacao(rate: Avaliacao):
     result = create_rating(rate)
     return {"status_code": 201 }  
+
+@router.delete("/avaliacoes/{id}")
+async def deleta_avaliacao(id: int):
+    result = delete_rating(id)
+    return {"status_code": 200 } 

@@ -42,22 +42,22 @@ def create_rating(new_data):
 #     except Exception as e:
 #         print(f" [ERROR] {str(e)}")
 
-# def delete_film(id:int):
+def delete_rating(id:int):
 
-#     try:
-#         with open(DB_FILMS_ID, "r") as file:
-#             data = json.load(file)
+    try:
+        with open(DB_AVALIACAO_ID, "r") as file:
+            data = json.load(file)
 
-#         for idx, item in enumerate(data):
-#             if(item['film_id'] == id):
-#                 data.pop(idx)
+        for idx, item in enumerate(data):
+            if(item['id'] == id):
+                data.pop(idx)
                 
-#         # 3. Write json file
-#         with open(DB_FILMS_ID, "w") as file:
-#             json.dump(data, file , indent=2)
+        # 3. Write json file
+        with open(DB_AVALIACAO_ID, "w") as file:
+            json.dump(data, file , indent=2)
 
-#     except Exception as e:
-#         print(f" [ERROR] {str(e)}")
+    except Exception as e:
+        print(f" [ERROR] {str(e)}")
 
 # def get_film(id):
 
