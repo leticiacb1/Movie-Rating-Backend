@@ -12,7 +12,7 @@ class Avaliacao(BaseModel):
 
 class Filme(BaseModel):
     film_id : int
-    nome : str
+    name : str
     description : str = Field(default = None, description="Resumo do filme")
     release_year : int 
     length: int

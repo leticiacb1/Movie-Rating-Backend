@@ -1,15 +1,8 @@
 [
   {
-    "film_id": 0,
-    "nome": "string",
-    "description": "string",
-    "release_year": 0,
-    "length": 0
-  },
-  {
     "film_id": 1,
-    "nome": "string",
-    "description": "string",
+    "name": "string1",
+    "description": "string1",
     "release_year": 0,
     "length": 0
   }
