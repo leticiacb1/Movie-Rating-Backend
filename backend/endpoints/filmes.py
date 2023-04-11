@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.models.base_models import Avaliacao , Filme
+from backend.models.base_models import Filme
 from fastapi import status
 import json
 

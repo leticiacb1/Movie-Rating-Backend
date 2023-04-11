@@ -1,0 +1,26 @@
+[
+  {
+    "id": 0,
+    "film_id": 0,
+    "comment": "teste teste",
+    "score": "7"
+  },
+  {
+    "id": 1,
+    "film_id": 2,
+    "comment": "nao gostei",
+    "score": 7
+  },
+  {
+    "id": 3,
+    "film_id": 3,
+    "comment": "string3",
+    "score": 6
+  },
+  {
+    "id": 7,
+    "film_id": 7,
+    "comment": "string7",
+    "score": 6
+  }
+]
