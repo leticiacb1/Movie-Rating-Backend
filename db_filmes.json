@@ -1,0 +1,23 @@
+[
+  {
+    "film_id": 1,
+    "name": "string1",
+    "description": "string1",
+    "release_year": 0,
+    "length": 0
+  },
+  {
+    "film_id": 2,
+    "name": "string2",
+    "description": "string2",
+    "release_year": 2,
+    "length": 200
+  },
+  {
+    "film_id": 3,
+    "name": "string3",
+    "description": "string3",
+    "release_year": 2,
+    "length": 200
+  }
+]

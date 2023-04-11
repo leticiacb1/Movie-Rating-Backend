@@ -1,4 +1,0 @@
-{'item_id': 1, 'item_name': 'adney', 'item_price': 10.0, 'item_is_offer': True}
-{'item_id': 2, 'item_name': 'tali', 'item_price': 20.0, 'item_is_offer': True}
-{'item_id': 3, 'item_name': 'testName', 'item_price': 25.0, 'item_is_offer': False}
-{'item_id': 4, 'item_name': 'ykaro', 'item_price': 30.0, 'item_is_offer': True}
