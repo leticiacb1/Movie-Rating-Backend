@@ -3,14 +3,19 @@ from backend.models.base_models import Avaliacao , Filme
 from fastapi import status
 import json
 
-from ..services.utils_filmes import create_film , get_all_films , update_film , delete_film 
+from ..services.utils_filmes import create_film , get_all_films , update_film , delete_film , get_film
 
 router = APIRouter()
 
 @router.get("/filmes/")
-async def show_filmes():
+async def get_all_filmes():
     result = get_all_films()
     return {"status_code": 200 , "filmes" : result}
+
+@router.get("/filmes/{id}")
+async def get_filme_id(id: int):
+    result = get_film(id)
+    return {"status_code": 200 , "filme" : result}
 
 @router.post("/filmes/")
 async def cadastra_filmes(film: Filme):

@@ -12,7 +12,7 @@ def create_film(new_data):
             data = json.load(file)
 
         # 2. Update json object
-        data.append({new_data.dict()})
+        data.append(new_data.dict())
 
         # 3. Write json file
         with open(DB_FILMS_ID, "w") as file:
@@ -58,6 +58,22 @@ def delete_film(id:int):
 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
+
+def get_film(id):
+
+    try:
+        with open(DB_FILMS_ID, "r") as file:
+            data = json.load(file)
+
+        result = ""
+        for item in data:
+            if(item['film_id'] == id):
+                result = item
+
+    except Exception as e:
+        print(f" [ERROR] {str(e)}")
+        
+    return result
 
 def get_all_films():
 
