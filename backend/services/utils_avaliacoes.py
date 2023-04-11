@@ -21,26 +21,24 @@ def create_rating(new_data):
     except Exception as e:
         print(f" [ERROR] {str(e)}")
 
-# def update_film(id : int , new_data : dict):
-#     try:
-#         with open(DB_FILMS_ID, "r") as file:
-#             data = json.load(file)
+def update_rating(id : int , new_data : dict):
+    try:
+        with open(DB_AVALIACAO_ID, "r") as file:
+            data = json.load(file)
 
-#         for item in data:
-#             if(item['film_id'] == id):
-                
-#                 item['name'] = new_data['name']
-#                 item['description'] = new_data['description']
-#                 item['release_year'] = new_data['release_year']
-#                 item['length'] = new_data['length']
-#                 break
+        for item in data:
+            if(item['id'] == id):
+
+                item['comment'] = new_data['comment']
+                item['score'] = new_data['score']
+                break
         
-#         # 3. Write json file
-#         with open(DB_FILMS_ID, "w") as file:
-#             json.dump(data, file , indent=2)
+        # 3. Write json file
+        with open(DB_AVALIACAO_ID, "w") as file:
+            json.dump(data, file , indent=2)
 
-#     except Exception as e:
-#         print(f" [ERROR] {str(e)}")
+    except Exception as e:
+        print(f" [ERROR] {str(e)}")
 
 def delete_rating(id:int):
 
