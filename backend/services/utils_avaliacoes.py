@@ -59,21 +59,21 @@ def delete_rating(id:int):
     except Exception as e:
         print(f" [ERROR] {str(e)}")
 
-# def get_film(id):
+def get_rating(id):
 
-#     try:
-#         with open(DB_FILMS_ID, "r") as file:
-#             data = json.load(file)
+    try:
+        with open(DB_AVALIACAO_ID, "r") as file:
+            data = json.load(file)
 
-#         result = ""
-#         for item in data:
-#             if(item['film_id'] == id):
-#                 result = item
+        result = ""
+        for item in data:
+            if(item['id'] == id):
+                result = item
 
-#     except Exception as e:
-#         print(f" [ERROR] {str(e)}")
+    except Exception as e:
+        print(f" [ERROR] {str(e)}")
         
-#     return result
+    return result
 
 def get_all_rating():
 
