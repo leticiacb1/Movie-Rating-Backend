@@ -13,12 +13,21 @@ async def get_all_filmes():
     """
     Retorna as informações de todos os filmes da base no formato:
 
+    filmes : {
+
     **filme_id** : {\\
             name : "Titanic",\\
             description : " Um filme que mistura um jovem romance com uma infeliz tragédia.",\\
             release_year 1998,\\
             length : 125\\
+    },
+
+    ...
+
     }
+
+    Caso a base não possua filmes , o resultado será "vazio".\\
+    Em caso de erro, uma exceção será levantava indicando o motivo do erro.
 
     """
 
@@ -31,12 +40,17 @@ async def get_filme_id(id: int):
     """
     Retorna as informação do filme com o respectivo {id}, no formato:
 
+   filme : {
+
     **filme_id** : {\\
-        name : "Titanic",\\
-        description : " Um filme que mistura um jovem romance com uma infeliz tragédia.",\\
-        release_year: 1998,\\
-        length : 125\\
+            name : "Titanic",\\
+            description : " Um filme que mistura um jovem romance com uma infeliz tragédia.",\\
+            release_year 1998,\\
+            length : 125\\
+    }\\
     }
+
+    Caso o filme não tenha exista na base, o resultado será "vazio".
 
     """
 
@@ -49,11 +63,19 @@ async def cadastra_filmes(film: Filme):
     """
     Cria um filme com as seguintes informações
 
-    - **name**: Título do filme
-    - **description** : breve sinopse do filme
-    - **release_year** : ano de lançamento do filme
-    - **length** : duração do filme em minutos
+    - **name**: Título do filme . Campo do tipo string.
+    - **description** : breve sinopse do filme. Campo do tipo string.
+    - **release_year** : ano de lançamento do filme. Campo do tipo inteiro.
+    - **length** : duração do filme em minutos.Campo do tipo inteiro.
     
+    Para criar um filme, deve ser preenchido os campos a seguir:
+
+    {\\
+    **"name"**: "Titanic",\\
+    **"description"**: "Um filme que mistura um jovem romance com uma infeliz tragédia.",\\
+    **"release_year"**: 1998,\\
+    **"length"**: 125\\
+    }
     """
 
     result = create_film(film)
@@ -69,10 +91,23 @@ async def update_filme(id: int , film: Filme):
     """
     Atualiza o filme de {id} correspondente, com possibilidade de mudança nos seguintes campos:
 
-    - **name**: Título do filme
-    - **description** : breve sinopse do filme
-    - **release_year** : ano de lançamento do filme
-    - **length** : duração do filme em minutos
+    - **name**: Título do filme . Campo do tipo string.
+    - **description** : breve sinopse do filme. Campo do tipo string.
+    - **release_year** : ano de lançamento do filme. Campo do tipo inteiro.
+    - **length** : duração do filme em minutos.Campo do tipo inteiro.
+    
+    Para realizar a atualização de um filme:
+
+    1 - Preencher o campo id com o valor correspondente do filme que se quer modificar.\\
+
+    2 - Preencher o dicionário com as mudanças, toda informação será reescrita. 
+
+    {\\
+    **"name"**: "Titanic",\\
+    **"description"**: "Um filme que mistura um jovem romance com uma infeliz tragédia.",\\
+    **"release_year"**: 1998,\\
+    **"length"**: 125\\
+    }
     
     """
 
@@ -85,5 +120,12 @@ async def update_filme(id: int , film: Filme):
 
 @router.delete("/filmes/{id}", summary="Deleta o filme do {id} especificado")
 async def deleta_filme(id: int): 
+
+    """
+    Deleta o filme que possui o {id} fornecido.
+
+    Para pagar um filme, basta indicar o {id} (Inteiro) do filme que se deseja apagar.
+    """
+
     result = delete_film(id)
     return {"status_code": 200 } 
