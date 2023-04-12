@@ -21,7 +21,7 @@ def create_film(new_data):
                     return "Filme já cadastrado"
         
         # 2. Update json 
-        film_id = int(data['count_id'])+1
+        film_id = int(data['count_id']) + 1
         data.update({ str(film_id): dict_data})
         
         # Atualiza controle de count_id:
@@ -31,7 +31,7 @@ def create_film(new_data):
         with open(DB_FILMS_ID, "w") as file:
             json.dump(data, file , indent=2)
 
-        return "OK" 
+        return "Filme criado com sucesso!" 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
 

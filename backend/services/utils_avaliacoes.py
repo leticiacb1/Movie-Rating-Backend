@@ -7,16 +7,31 @@ DB_AVALIACAO_ID = os.getenv('DB_RATING_PATH')
 
 def create_rating(new_data):
     try:
-        # 1. Read file contents
+        # 1. Read
         with open(DB_AVALIACAO_ID) as file:
             data = json.load(file)
 
-        # 2. Update json object
-        data.append(new_data.dict())
+        # # Verifica se o objeto ja esta cadastrado:
+        dict_data = new_data.dict()
+        # for id, item in data.items():
+        #     if(id.isdigit()):
+        #         if(item["name"] == dict_data["name"] and item["description"] == dict_data["description"] 
+        #             and item["release_year"] == dict_data["release_year"] and item["length"] == dict_data["length"]):
 
-        # 3. Write json file
+        #             return "Filme já cadastrado"
+                
+        # 2. Update json object
+        id = int(data['count_id']) + 1
+        data.update({str(id) : dict_data})
+
+        # Atualiza controle de count_id:
+        data['count_id'] = id
+
+        # 3. Write
         with open(DB_AVALIACAO_ID, "w") as file:
             json.dump(data, file , indent=2)
+
+        return "Avaliação criada com sucesso!"
 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
