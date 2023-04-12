@@ -56,7 +56,6 @@ def update_rating(id : int , new_data : dict):
             if(rating_id.isdigit()):
                 if(int(rating_id) == int(id)):
                     
-                    item['film_id'] = new_data['film_id']
                     item['comment'] = new_data['comment']
                     item['score'] = new_data['score']
                     sem_correspondencia = False

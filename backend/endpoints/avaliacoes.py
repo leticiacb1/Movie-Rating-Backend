@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.models.base_models import Avaliacao
+from backend.models.base_models import Avaliacao, AvaliacaoUpdate
 from fastapi import status
 import json
 
@@ -27,9 +27,14 @@ async def cadastra_avaliacao(rate: Avaliacao):
         return {"status_code": 404 , "mensagem":result }  
 
 @router.put("/avaliacoes/{id}/")
-async def update_avaliacao(id: int , film: Avaliacao):
+async def update_avaliacao(id: int , film: AvaliacaoUpdate):
     result = update_rating(id , film.dict())
-    return {"status_code": 200 } 
+
+    if(result == "OK"):
+        return {"status_code": 200 } 
+    else:
+        return {"status_code": 404 , "mensagem":result }
+
 
 @router.delete("/avaliacoes/{id}")
 async def deleta_avaliacao(id: int):

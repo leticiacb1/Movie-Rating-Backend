@@ -14,3 +14,7 @@ class Filme(BaseModel):
     description : str = Field(default = None, description="Resumo do filme")
     release_year : int 
     length: int
+
+class AvaliacaoUpdate(BaseModel):
+    comment : str = Field(default = None, description="Descricao da avaliação")
+    score : int = Field(default = 1 , gt=0, le=5)
