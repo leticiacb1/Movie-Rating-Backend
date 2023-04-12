@@ -71,9 +71,11 @@ def delete_rating(id:int):
         with open(DB_AVALIACAO_ID, "r") as file:
             data = json.load(file)
 
-        for idx, item in enumerate(data):
-            if(item['id'] == id):
-                data.pop(idx)
+        keys = tuple(data.keys())
+        for rating_id in keys:
+            if(rating_id.isdigit()):
+                if(int(rating_id) == int(id)):
+                    data.pop(rating_id)
                 
         # 3. Write json file
         with open(DB_AVALIACAO_ID, "w") as file:
@@ -88,10 +90,11 @@ def get_rating(id):
         with open(DB_AVALIACAO_ID, "r") as file:
             data = json.load(file)
 
-        result = ""
-        for item in data:
-            if(item['id'] == id):
-                result = item
+        result = "Nenhum filme encontrado."
+        for rating_id , item in data.items():
+            if(rating_id.isdigit()):
+                if(int(rating_id) == int(id)):
+                    result = item
 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
@@ -101,6 +104,7 @@ def get_rating(id):
 def get_all_rating():
 
     try:
+        data = "OK"
         with open(DB_AVALIACAO_ID, "r") as file:
             data = json.load(file)
     except Exception as e:
