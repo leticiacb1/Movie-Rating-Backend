@@ -38,19 +38,29 @@ def create_rating(new_data):
 
 def update_rating(id : int , new_data : dict):
     try:
+
+        sem_correspondencia = True
         with open(DB_AVALIACAO_ID, "r") as file:
             data = json.load(file)
 
-        for item in data:
-            if(item['id'] == id):
+        for rating_id, item in data.items():
 
-                item['comment'] = new_data['comment']
-                item['score'] = new_data['score']
-                break
+            if(rating_id.isdigit()):
+                if(int(rating_id) == int(id)):
+                    
+                    item['film_id'] = new_data['film_id']
+                    item['comment'] = new_data['comment']
+                    item['score'] = new_data['score']
+                    sem_correspondencia = False
+                    break
         
         # 3. Write json file
-        with open(DB_AVALIACAO_ID, "w") as file:
-            json.dump(data, file , indent=2)
+        if(not sem_correspondencia):
+            with open(DB_AVALIACAO_ID, "w") as file:
+                json.dump(data, file , indent=2)
+            return "OK"
+        else:
+            return "O input não possui correspondência no banco de dados."
 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
