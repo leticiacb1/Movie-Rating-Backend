@@ -11,7 +11,6 @@ class Avaliacao(BaseModel):
     score : int = Field(default = 1 , gt=0, le=5)
 
 class Filme(BaseModel):
-    film_id : int
     name : str
     description : str = Field(default = None, description="Resumo do filme")
     release_year : int 
