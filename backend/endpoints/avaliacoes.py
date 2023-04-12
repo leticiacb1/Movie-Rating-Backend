@@ -20,7 +20,11 @@ async def get_avaliacao_id(id: int):
 @router.post("/avaliacoes/")
 async def cadastra_avaliacao(rate: Avaliacao):
     result = create_rating(rate)
-    return {"status_code": 201 }  
+
+    if(result == "OK"):
+        return {"status_code": 201 , "mensagem": result}  
+    else:
+        return {"status_code": 404 , "mensagem":result }  
 
 @router.put("/avaliacoes/{id}/")
 async def update_avaliacao(id: int , film: Avaliacao):

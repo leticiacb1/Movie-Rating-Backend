@@ -31,7 +31,7 @@ def create_film(new_data):
         with open(DB_FILMS_ID, "w") as file:
             json.dump(data, file , indent=2)
 
-        return "Filme criado com sucesso!" 
+        return "OK" 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
 

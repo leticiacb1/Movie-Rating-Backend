@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DB_AVALIACAO_ID = os.getenv('DB_RATING_PATH')
+DB_FILMS_ID = os.getenv('DB_FILMS_PATH')
 
 def create_rating(new_data):
     try:
@@ -11,27 +12,34 @@ def create_rating(new_data):
         with open(DB_AVALIACAO_ID) as file:
             data = json.load(file)
 
-        # # Verifica se o objeto ja esta cadastrado:
         dict_data = new_data.dict()
-        # for id, item in data.items():
-        #     if(id.isdigit()):
-        #         if(item["name"] == dict_data["name"] and item["description"] == dict_data["description"] 
-        #             and item["release_year"] == dict_data["release_year"] and item["length"] == dict_data["length"]):
 
-        #             return "Filme já cadastrado"
-                
+        # Verifica se film_id existe na base de filmes
+        sem_correspondencia = True
+        with open(DB_FILMS_ID) as file:
+            data_film = json.load(file)
+        
+        for film_id in data_film.keys():
+            if(film_id.isdigit()):
+                if(int(film_id) == int(dict_data['film_id'])):
+                    sem_correspondencia = False
+                    break
+        
         # 2. Update json object
-        id = int(data['count_id']) + 1
-        data.update({str(id) : dict_data})
+        if(not sem_correspondencia):    
+            id = int(data['count_id']) + 1
+            data.update({str(id) : dict_data})
 
-        # Atualiza controle de count_id:
-        data['count_id'] = id
+            # Atualiza controle de count_id:
+            data['count_id'] = id
 
-        # 3. Write
-        with open(DB_AVALIACAO_ID, "w") as file:
-            json.dump(data, file , indent=2)
+            # 3. Write
+            with open(DB_AVALIACAO_ID, "w") as file:
+                json.dump(data, file , indent=2)
 
-        return "Avaliação criada com sucesso!"
+            return "OK"
+        else:
+            return f"id_film = '{dict_data['film_id']}' não possui correspondencia na base de filmes"
 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
