@@ -50,7 +50,7 @@ async def get_filme_id(id: int):
     }\\
     }
 
-    Caso o filme não tenha exista na base, o resultado será "vazio".
+    Caso o filme não exista na base, o resultado será "vazio".
 
     """
 
@@ -124,7 +124,7 @@ async def deleta_filme(id: int):
     """
     Deleta o filme que possui o {id} fornecido.
 
-    Para pagar um filme, basta indicar o {id} (Inteiro) do filme que se deseja apagar.
+    Para apagar um filme, basta indicar o {id} (Inteiro) do filme que se deseja apagar.
     """
 
     result = delete_film(id)

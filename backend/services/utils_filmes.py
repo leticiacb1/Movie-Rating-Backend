@@ -3,6 +3,7 @@ import json
 from dotenv import load_dotenv
 
 load_dotenv()
+DB_AVALIACAO_ID = os.getenv('DB_RATING_PATH')
 DB_FILMS_ID = os.getenv('DB_FILMS_PATH')
 
 def create_film(new_data):
@@ -80,6 +81,22 @@ def delete_film(id:int):
         # 3. Write json file
         with open(DB_FILMS_ID, "w") as file:
             json.dump(data, file , indent=2)
+
+        # deletando avaliações relacionadas a esse filme
+        with open(DB_AVALIACAO_ID, "r") as file:
+            data_rating = json.load(file)
+        
+        list_ratings = []
+        for key in data_rating.keys():
+            if(key.isdigit()):
+                if(data_rating[key]["film_id"] == int(id)):
+                    list_ratings.append(key)
+                    
+        for i in list_ratings:
+            data_rating.pop(i)
+
+        with open(DB_AVALIACAO_ID, "w") as file:
+            json.dump(data_rating, file , indent=2)
 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
