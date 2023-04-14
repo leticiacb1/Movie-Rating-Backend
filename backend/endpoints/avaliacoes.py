@@ -32,11 +32,11 @@ async def get_all_avaliacoes():
     result = get_all_rating()
     return {"status_code": 200 , "avaliacoes" : result}
 
-@router.get("/avaliacoes/{id}", summary="Retorna avaliação do id especificado")
+@router.get("/avaliacoes/{id}", summary="Retorna avaliações do filme de id especificado")
 async def get_avaliacao_id(id: int):
 
     """
-    Retorna as informação da avaliação com o respectivo {id}, no formato:
+    Retorna as avaliações do filme de id especificado, no formato:
 
    avaliacao : {
 
@@ -44,14 +44,15 @@ async def get_avaliacao_id(id: int):
             film_id : 1,\\
             comment : "Gostei muito do filme!",\\
             score: 5\\
-    }
+    },
+    ...
     }
 
-    Caso a avaliação não exista na base, o resultado será "vazio".
+    Caso não exista avaliação para esse filme, resultado será "vazio".
 
     """
-    result = get_rating(id)
-    return {"status_code": 200 , "avaliacao" : result}
+    result, list_ratings = get_rating(id)
+    return {"status_code": 200 , "mensagem" : result, "avaliações" : list_ratings}
 
 @router.post("/avaliacoes/", summary="Cadastra uma nova avaliação")
 async def cadastra_avaliacao(rate: Avaliacao):

@@ -97,16 +97,18 @@ def get_rating(id):
         with open(DB_AVALIACAO_ID, "r") as file:
             data = json.load(file)
 
-        result = "Nenhum filme encontrado."
+        result = f"Nenhuma avaliação para o filme de id = {id} encontrado."
+        list_ratings = []
         for rating_id , item in data.items():
             if(rating_id.isdigit()):
-                if(int(rating_id) == int(id)):
-                    result = item
+                if(item["film_id"] == int(id)):
+                    list_ratings.append(item)
+                    result = "Avaliações do filme!"
 
     except Exception as e:
         print(f" [ERROR] {str(e)}")
         
-    return result
+    return result, list_ratings
 
 def get_all_rating():
 
