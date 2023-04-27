@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 # --------------------------- MODELOS Pydantic ---------------------------
 '''
@@ -9,7 +10,7 @@ Ao ler um usuário, agora podemos declarar que os itens conterão os itens que p
 
 class ItemBase(BaseModel):
     title: str
-    description: str | None = None
+    description: str
 
 
 class ItemCreate(ItemBase):
@@ -35,7 +36,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    items: list[Item] = []
+    items: List[Item]
 
     class Config:
         orm_mode = True    # Seta um valor de configuração , por isso o "="

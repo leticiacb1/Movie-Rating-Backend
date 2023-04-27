@@ -4,8 +4,8 @@
 
 from sqlalchemy.orm import Session
 
-from models import model
-from schemas import schemas
+from .models import User , Item
+from .schemas import *
 
 def get_user(db: Session, user_id: int):
     '''
@@ -36,7 +36,7 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
 
 #  ------------> Write data <------------
 
-def create_user(db: Session, user: schemas.UserCreate):
+def create_user(db: Session, user: UserCreate):
     fake_hashed_password = user.password + "notreallyhashed"
     db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
     db.add(db_user) # Adiciona a nov ainstancia no banco de dados.
@@ -45,7 +45,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
+def create_user_item(db: Session, item: ItemCreate, user_id: int):
     db_item = models.Item(**item.dict(), owner_id=user_id)
     db.add(db_item)
     db.commit()

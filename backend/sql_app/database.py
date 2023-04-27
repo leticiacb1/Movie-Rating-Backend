@@ -1,10 +1,18 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
 # Neste exemplo, estamos "conectando" a um banco de dados SQLite (abrindo um arquivo com o banco de dados SQLite). 
 # #O arquivo estará localizado no mesmo diretório do arquivo sql_app.db :
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"   
+
+load_dotenv()
+USERNAME = os.getenv('USERNAME')
+PASSWORD = os.getenv('PASSWORD')
+
+# SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{USERNAME}:{PASSWORD}@127.0.0.1:3306/movies_ratings.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./movies_ratings.db"
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
 
 engine = create_engine(
