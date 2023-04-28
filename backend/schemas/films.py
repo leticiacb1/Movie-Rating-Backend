@@ -1,5 +1,6 @@
 from pydantic import BaseModel , Field
 from  typing  import  List
+from .rating import Rating
 
 class MovieBase(BaseModel):
     name : str
@@ -17,7 +18,7 @@ class MovieUpdate(MovieBase):
 
 class Movie (MovieBase):
     movie_id: int
-    ratings: List [ Avaliacao ]
+    ratings: List [ Rating ]
     
     class  Config :
         orm_mode  =  True

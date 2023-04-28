@@ -1,130 +1,40 @@
-import os
-import json
-from dotenv import load_dotenv
+'''
+Esse arquivo realiza a comunicação com o banco de dados
+'''
 
-load_dotenv()
-DB_AVALIACAO_ID = os.getenv('DB_RATING_PATH')
-DB_FILMS_ID = os.getenv('DB_FILMS_PATH')
+from sqlalchemy.orm import Session
 
-def create_film(new_data):
-    try:
-        # 1. Read 
-        with open(DB_FILMS_ID) as file:
-            data = json.load(file)
+from ..models.tables import Movies
+from ..schemas.films import *
 
-        # Verifica se o objeto ja esta cadastrado:
-        dict_data = new_data.dict()
-        for film_id, item in data.items():
-            if(film_id.isdigit()):
-                if(item["name"] == dict_data["name"] and item["description"] == dict_data["description"] 
-                    and item["release_year"] == dict_data["release_year"] and item["length"] == dict_data["length"]):
+# def get_user(db: Session, user_id: int):
+#     '''
+#     Retorna usuário do id pedido.
+#     '''
+#     return db.query(models.User).filter(models.User.id == user_id).first()
 
-                    return "Filme já cadastrado"
-        
-        # 2. Update json 
-        film_id = int(data['count_id']) + 1
-        data.update({ str(film_id): dict_data})
-        
-        # Atualiza controle de count_id:
-        data['count_id'] = film_id
-        
-        # 3. Write 
-        with open(DB_FILMS_ID, "w") as file:
-            json.dump(data, file , indent=2)
 
-        return "OK" 
-    except Exception as e:
-        print(f" [ERROR] {str(e)}")
+def get_movies(db: Session, skip: int = 0, limit: int = 100):
+    '''
+    Retorna todos os filmes.
+    '''
+    return db.query(Movies).offset(skip).limit(limit).all()
 
-def update_film(id : int , new_data : dict):
-    try:
 
-        sem_correspondencia = True
-        with open(DB_FILMS_ID, "r") as file:
-            data = json.load(file)
+#  ------------> Write data <------------
 
-        for film_id, item in data.items():
+# def create_user(db: Session, user: UserCreate):
+#     fake_hashed_password = user.password + "notreallyhashed"
+#     db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+#     db.add(db_user) # Adiciona a nov ainstancia no banco de dados.
+#     db.commit()     # Salva no banco
+#     db.refresh(db_user)  # Atualizar sua instancia para  que contenha novos dados do banco de dados, como o ID gerado
+#     return db_user
 
-            if(film_id.isdigit()):
-                if(int(film_id) == int(id)):
-            
-                    item['name'] = new_data['name']
-                    item['description'] = new_data['description']
-                    item['release_year'] = new_data['release_year']
-                    item['length'] = new_data['length']
-                    sem_correspondencia = False
-                    break
-        
-        # 3. Write json file
-        if(not sem_correspondencia):
-            with open(DB_FILMS_ID, "w") as file:
-                json.dump(data, file , indent=2)
-            return "OK"
-        else:
-            return "O input não possui correspondência no banco de dados."
 
-    except Exception as e:
-        print(f" [ERROR] {str(e)}")
-
-def delete_film(id:int):
-
-    try:
-        with open(DB_FILMS_ID, "r") as file:
-            data = json.load(file)
-
-        keys = tuple(data.keys())
-        for film_id in keys:
-            if(film_id.isdigit()):
-                if(int(film_id) == int(id)):
-                    data.pop(film_id)
-                
-        # 3. Write json file
-        with open(DB_FILMS_ID, "w") as file:
-            json.dump(data, file , indent=2)
-
-        # deletando avaliações relacionadas a esse filme
-        with open(DB_AVALIACAO_ID, "r") as file:
-            data_rating = json.load(file)
-        
-        list_ratings = []
-        for key in data_rating.keys():
-            if(key.isdigit()):
-                if(data_rating[key]["film_id"] == int(id)):
-                    list_ratings.append(key)
-                    
-        for i in list_ratings:
-            data_rating.pop(i)
-
-        with open(DB_AVALIACAO_ID, "w") as file:
-            json.dump(data_rating, file , indent=2)
-
-    except Exception as e:
-        print(f" [ERROR] {str(e)}")
-
-def get_film(id):
-
-    try:
-        with open(DB_FILMS_ID, "r") as file:
-            data = json.load(file)
-
-        result = "Nenhum filme encontrado."
-        for film_id , item in data.items():
-            if(film_id.isdigit()):
-                if(int(film_id) == int(id)):
-                    result = item
-
-    except Exception as e:
-        print(f" [ERROR] {str(e)}")
-        
-    return result
-
-def get_all_films():
-
-    try:
-        data = "OK"
-        with open(DB_FILMS_ID, "r") as file:
-            data = json.load(file)
-    except Exception as e:
-        print(f" [ERROR] {str(e)}")
-        
-    return data
+# def create_user_item(db: Session, item: ItemCreate, user_id: int):
+#     db_item = models.Item(**item.dict(), owner_id=user_id)
+#     db.add(db_item)
+#     db.commit()
+#     db.refresh(db_item)
+#     return db_item
