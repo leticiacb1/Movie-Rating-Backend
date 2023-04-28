@@ -17,7 +17,6 @@ class Movies(Base):
     description = Column(String, unique=True, index=True)
     release_year = Column(Integer, index=True)
     director = Column(String, index=True)
-    release_year = Column(Integer, index=True)
     length = Column(Integer, default=True)
 
     ratings = relationship("Rating", back_populates="films")
