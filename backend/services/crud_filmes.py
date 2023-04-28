@@ -19,11 +19,18 @@ def get_movie_by_tile(db : Session , title : str):
     '''
     Retorna os filmes com o titulo especificado
     '''
+    return db.query(Movies).filter(Movies.name == title).all()
 
-    return db.query(Movies).filter(Movies.name == title).first()
+def get_movie_by_id(db : Session , id : id):
+    '''
+    Retorna os filmes com o id especificado
+    '''
+    return db.query(Movies).filter(Movies.movie_id == id).first()
 
-def create_movie(db : Session , movie : MovieCreate):
-
+def register_movie(db : Session , movie : MovieCreate):
+    '''
+    Cadastra um novo filme
+    '''
     new_movie = Movies(**movie.dict())
     db.add(new_movie)
     db.commit()
@@ -32,26 +39,19 @@ def create_movie(db : Session , movie : MovieCreate):
     return new_movie
 
 def movie_update(db : Session , movie : MovieUpdate , id : int):
-
-   db.query(Movies).filter(Movies.movie_id == id).update({'name': movie.name , 'tipo': movie.tipo , 'description': movie.description , 'release_year' : movie.release_year , 'director' : movie.director , 'length' : movie.length })
-   db.commit()
+    '''
+    Atualiza um filme já existente na base de dados
+    '''
+    db.query(Movies).filter(Movies.movie_id == id).update({'name': movie.name , 'tipo': movie.tipo , 'description': movie.description , 'release_year' : movie.release_year , 'director' : movie.director , 'length' : movie.length })
+    db.commit()
    
-   return db.query(Movies).filter(Movies.movie_id == id).first() 
-
-#  ------------> Write data <------------
-
-# def create_user(db: Session, user: UserCreate):
-#     fake_hashed_password = user.password + "notreallyhashed"
-#     db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
-#     db.add(db_user) # Adiciona a nov ainstancia no banco de dados.
-#     db.commit()     # Salva no banco
-#     db.refresh(db_user)  # Atualizar sua instancia para  que contenha novos dados do banco de dados, como o ID gerado
-#     return db_user
+    return db.query(Movies).filter(Movies.movie_id == id).first() 
 
 
-# def create_user_item(db: Session, item: ItemCreate, user_id: int):
-#     db_item = models.Item(**item.dict(), owner_id=user_id)
-#     db.add(db_item)
-#     db.commit()
-#     db.refresh(db_item)
-#     return db_item
+def movie_delete(db : Session , id : int):
+    '''
+    Deleta um filme caso ele exista na base de dados
+    '''
+    db.query(Movies).filter(Movies.movie_id == id).delete()
+    db.commit()
+    return {'message' : 'O filme foi deletado com sucesso!'}
