@@ -21,6 +21,21 @@ def get_movies(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Movies).offset(skip).limit(limit).all()
 
 
+def get_movie_by_tile(db : Session , title : str):
+    '''
+    Retorna os filmes com o titulo especificado
+    '''
+
+    return db.query(Movies).filter(Movies.name == title).first()
+
+def create_film(db : Session , movie : MovieCreate):
+
+    new_movie = Movies(**movie.dict())
+    db.add(new_movie)
+    db.commit()
+    db.refresh(new_movie)
+
+    return new_movie
 #  ------------> Write data <------------
 
 # def create_user(db: Session, user: UserCreate):
