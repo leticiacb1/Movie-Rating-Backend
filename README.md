@@ -18,5 +18,8 @@ O conteúdo mínimo desses dois arquivos deve ser a variável responsável pelo 
 }
 ```
 
+
+<img src="diagrama_r.png"/>
+
 ### Vídeo demonstração do funcionamento
 Link : https://youtu.be/Nv5XD2XsCIU
