@@ -6,14 +6,14 @@ class RatingBase(BaseModel):
     score : int = Field(default = 1 , gt=0, le=5)
 
 class RatingCreate(RatingBase):
-    film_id : int 
+    movie_id : int 
     pass
 
 class RatingUpdate(RatingBase):
     pass
 
 class Rating(RatingBase):
-    film_id : int 
+    movie_id : int 
     rating_id: int
 
     class Config:

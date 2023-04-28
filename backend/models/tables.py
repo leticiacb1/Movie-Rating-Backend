@@ -11,9 +11,9 @@ from ..sql_app.database import Base
 class Movies(Base):
     __tablename__ = "movies"  
 
-    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+    movie_id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     name = Column(String, unique=True, index=True)
-    tipo = Column(String, unique=True, index=True)
+    tipo = Column(String, index=True)
     description = Column(String, unique=True, index=True)
     release_year = Column(Integer, index=True)
     director = Column(String, index=True)
@@ -25,9 +25,9 @@ class Movies(Base):
 class Rating(Base):
     __tablename__ = "ratings"
 
-    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+    rating_id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     score = Column(Integer, index=True)
     comment = Column(String, index=True)
-    film_id = Column(Integer, ForeignKey("movies.id"))
+    movie_id = Column(Integer, ForeignKey("movies.movie_id"))
 
     films = relationship("Movies", back_populates="ratings")

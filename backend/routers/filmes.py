@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from ..schemas.films import *
-from ..services.utils_filmes import *
+from ..services.crud_filmes import *
 
-from ..sql_app.database import *
+from ..sql_app.database import Base , engine , SessionLocal
 
 Base.metadata.create_all(bind=engine)
 #models.Base.metadata.create_all(bind=engine) 
