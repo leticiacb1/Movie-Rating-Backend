@@ -34,5 +34,8 @@ def read_movie_by_title(title: str , db: Session = Depends(get_db)):
 
 @router.post("/movies/", response_model= Movie)
 def create_movie(movie : MovieCreate, db: Session = Depends(get_db)):
-    return create_film(db=db, movie=movie)     
+    return create_movie(db=db, movie=movie)     
 
+@router.put("/movies/{id}", response_model= Movie)
+def update_movie(movie : MovieUpdate, db: Session = Depends(get_db) , id = id):
+    return movie_update(db=db, movie=movie , id = id) 

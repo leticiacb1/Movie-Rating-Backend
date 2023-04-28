@@ -7,12 +7,6 @@ from sqlalchemy.orm import Session
 from ..models.tables import Movies
 from ..schemas.films import *
 
-# def get_user(db: Session, user_id: int):
-#     '''
-#     Retorna usuário do id pedido.
-#     '''
-#     return db.query(models.User).filter(models.User.id == user_id).first()
-
 
 def get_movies(db: Session, skip: int = 0, limit: int = 100):
     '''
@@ -28,7 +22,7 @@ def get_movie_by_tile(db : Session , title : str):
 
     return db.query(Movies).filter(Movies.name == title).first()
 
-def create_film(db : Session , movie : MovieCreate):
+def create_movie(db : Session , movie : MovieCreate):
 
     new_movie = Movies(**movie.dict())
     db.add(new_movie)
@@ -36,6 +30,14 @@ def create_film(db : Session , movie : MovieCreate):
     db.refresh(new_movie)
 
     return new_movie
+
+def movie_update(db : Session , movie : MovieUpdate , id : int):
+
+   db.query(Movies).filter(Movies.movie_id == id).update({'name': movie.name , 'tipo': movie.tipo , 'description': movie.description , 'release_year' : movie.release_year , 'director' : movie.director , 'length' : movie.length })
+   db.commit()
+   
+   return db.query(Movies).filter(Movies.movie_id == id).first() 
+
 #  ------------> Write data <------------
 
 # def create_user(db: Session, user: UserCreate):
