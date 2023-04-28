@@ -1,12 +1,14 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
+from fastapi import APIRouter
 
-from sql_app import crud, models, schemas
-from sql_app.database import SessionLocal, engine
+from . import crud, models, schemas
+from .database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+# app = FastAPI()
+router = APIRouter()
 
 # Dependency
 def get_db():
@@ -16,7 +18,7 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/movies/", response_model=schemas.Movie)
+@router.post("/movies/", response_model=schemas.Movie)
 def create_movie(movie: schemas.MovieCreate, db: Session = Depends(get_db)):
     db_user = crud.get_movie_by_name(db, name=movie.name)
     if db_user:
@@ -24,13 +26,13 @@ def create_movie(movie: schemas.MovieCreate, db: Session = Depends(get_db)):
     return crud.create_movie(db=db, movie=movie)
 
 
-@app.get("/movies/", response_model=list[schemas.Movie])
+@router.get("/movies/", response_model=list[schemas.Movie])
 def read_movies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     movies = crud.get_movies(db, skip=skip, limit=limit)
     return movies
 
 
-@app.get("/movies/{movie_id}", response_model=schemas.Movie)
+@router.get("/movies/{movie_id}", response_model=schemas.Movie)
 def read_movie(movie_id: int, db: Session = Depends(get_db)):
     db_user = crud.get_movie(db, movie_id=movie_id)
     if db_user is None:
@@ -38,14 +40,14 @@ def read_movie(movie_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@app.post("/movies/{movie_id}/ratings/", response_model=schemas.Rating)
+@router.post("/movies/{movie_id}/ratings/", response_model=schemas.Rating)
 def create_rating_for_movie(
     movie_id: int, rating: schemas.RatingCreate, db: Session = Depends(get_db)
 ):
     return crud.create_movie_rating(db=db, rating=rating, movie_id=movie_id)
 
 
-@app.get("/ratings/", response_model=list[schemas.Rating])
+@router.get("/ratings/", response_model=list[schemas.Rating])
 def read_ratings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     ratings = crud.get_ratings(db, skip=skip, limit=limit)
     return ratings
