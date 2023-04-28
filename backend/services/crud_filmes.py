@@ -42,9 +42,15 @@ def movie_update(db : Session , movie : MovieUpdate , id : int):
     '''
     Atualiza um filme já existente na base de dados
     '''
+
+    # Verifica se o id que se quer atualizar existe: 
+    movie_to_update = db.query(Movies).filter(Movies.movie_id == id).first()
+    if movie_to_update is None : 
+        return None
+
     db.query(Movies).filter(Movies.movie_id == id).update({'name': movie.name , 'tipo': movie.tipo , 'description': movie.description , 'release_year' : movie.release_year , 'director' : movie.director , 'length' : movie.length })
     db.commit()
-   
+
     return db.query(Movies).filter(Movies.movie_id == id).first() 
 
 
@@ -52,6 +58,12 @@ def movie_delete(db : Session , id : int):
     '''
     Deleta um filme caso ele exista na base de dados
     '''
+
+    # Verifica se o id que se quer deletar existe: 
+    movie_to_delete= db.query(Movies).filter(Movies.movie_id == id).first()
+    if movie_to_delete is None : 
+        return None
+
     db.query(Movies).filter(Movies.movie_id == id).delete()
     db.commit()
     return {'message' : 'O filme foi deletado com sucesso!'}

@@ -19,10 +19,10 @@ class Movies(Base):
     director = Column(String, index=True)
     length = Column(Integer, default=True)
 
-    ratings = relationship("Rating", back_populates="films")
+    ratings = relationship("Ratings", back_populates="films")
 
 
-class Rating(Base):
+class Ratings(Base):
     __tablename__ = "ratings"
 
     rating_id = Column(Integer, primary_key=True, autoincrement=True, index=True)

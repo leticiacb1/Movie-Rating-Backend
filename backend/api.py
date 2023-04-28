@@ -9,4 +9,4 @@ api = APIRouter(prefix='/api')
 api.include_router(filmes.router , tags = [Tags.filmes])
 
 # Avaliacoes
-# api.include_router(avaliacoes.router , tags = [Tags.avaliacoes])
+api.include_router(avaliacoes.router , tags = [Tags.avaliacoes])

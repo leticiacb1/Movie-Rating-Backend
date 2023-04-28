@@ -52,7 +52,6 @@ def read_movies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
     '''
 
-
     movies = get_movies(db, skip=skip, limit=limit)     
     return movies
 
@@ -79,10 +78,9 @@ def read_movie_by_title(title: str , db: Session = Depends(get_db)):
     
     '''
 
-
     movie = get_movie_by_tile(db, title = title)
     if movie is None:
-        raise HTTPException(status_code=404, detail="Filme não encontrado")
+        raise HTTPException(status_code=404, detail=" [ERROR] Filme não encontrado")
     return movie
 
 @router.post("/movies/", response_model= Movie , summary="Cadastra um nome filme")
@@ -130,7 +128,10 @@ def update_movie(movie : MovieUpdate, db: Session = Depends(get_db) , id = id):
     }
     '''
 
-    return movie_update(db=db, movie=movie , id = id) 
+    movie = movie_update(db=db, movie=movie , id = id) 
+    if movie is None:
+        raise HTTPException(status_code=404, detail=" [ERROR] Filme não encontrado para ser atualizado.")
+    return movie
 
 @router.delete("/movies/{id}" , summary="Deleta o filme com o id especificado")
 def delete_movie(db: Session = Depends(get_db) , id = id):
@@ -139,7 +140,7 @@ def delete_movie(db: Session = Depends(get_db) , id = id):
         Para apagar um filme, basta indicar o {id} (Inteiro) do filme que se deseja apagar.
     '''
 
-    movie = get_movie_by_id(db, id = id)
+    movie = movie_delete(db=db, id = id) 
     if movie is None:
-        raise HTTPException(status_code=400, detail="Filme não existe para ser apagado da base.")
-    return movie_delete(db=db, id = id) 
+        raise HTTPException(status_code=400, detail=" [ERROR]  Filme não existe para ser apagado da base.")
+    return movie

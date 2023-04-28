@@ -1,53 +1,58 @@
-# from fastapi import APIRouter
-# from backend.models.base_models import Avaliacao, AvaliacaoUpdate
-# from fastapi import status
-# from fastapi import Depends, FastAPI, HTTPException
-# from sqlalchemy.orm import Session
-# from typing import List
+from fastapi import APIRouter
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.orm import Session
+from typing import List
 
-# from . import crud
-# from . import models
-# from . import schemas
+from ..schemas.rating import *
+from ..services.crud_avaliacoes import *
 
-# from .database import SessionLocal, engine
+from ..sql_app.database import Base , engine , SessionLocal
 
-# from ..services.utils_avaliacoes import get_all_rating , create_rating, delete_rating, get_rating, update_rating
+Base.metadata.create_all(bind=engine) 
+router = APIRouter()
 
-# models.Base.metadata.create_all(bind=engine) 
-# router = APIRouter()
+# --------- Dependency ---------
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-# # --------- Dependency ---------
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
+@router.get("/ratings/", response_model=List[Rating] , summary="Retorna todas as avaliações da base de dados")
+def read_ratings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
-# @router.post("/users/", response_model=schemas.User)
-# def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-#     db_user = crud.get_user_by_email(db, email=user.email)
-#     if db_user:
-#         raise HTTPException(status_code=400, detail="Email already registered")
-#     return crud.create_user(db=db, user=user)     # Modelo de retorno é SQLAlchemy                                       
+    ratings = get_ratings(db, skip=skip, limit=limit)     
+    return ratings
 
+@router.get("/ratings/{movie_id}", response_model=List[Rating] , summary="Retorna todas as avaliações cadastradas para o filme especificado")
+def read_rating_by_movie_title(movie_id: int , db: Session = Depends(get_db)):
+    ratings = get_rating_by_movie_id(db, id = movie_id)
+    if ratings is None:
+        raise HTTPException(status_code=404, detail="[ERROR] Filme não cadastrado.")
+    return ratings
 
-# @router.get("/users/", response_model=List[schemas.User])
-# def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-#     users = crud.get_users(db, skip=skip, limit=limit)     
-#     return users
-# Acessar um banco de dados pode levar tempo. Como  SQLAlchemy não possui compatibilidade direta com "awaut" utilizamos o ".first()"
+@router.post("/ratings/", response_model= Rating , summary="Cadastra uma avaliação")
+def create_rating(rating : RatingCreate, db: Session = Depends(get_db)):
+    
+    new_rating = register_rating(db=db, rating=rating)
 
-# @router.get("/users/{user_id}", response_model=schemas.User)
-# def read_user(user_id: int, db: Session = Depends(get_db)):
-#     db_user = crud.get_user(db, user_id=user_id)
-#     if db_user is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     return db_user
+    if new_rating is None:
+       raise HTTPException(status_code=404, detail=f" [ERROR] Não existe filme com id={rating.movie_id} cadastrado.")
+    return new_rating 
 
+@router.put("/ratings/{id}", response_model= Rating , summary="Atualiza a avaliação com o id especificado")
+def update_rating(rating : RatingUpdate, db: Session = Depends(get_db) , id = id):
+    
+    rating = rating_update(db=db, rating=rating , id = id) 
+    if rating is None:
+        raise HTTPException(status_code=404, detail=" [ERROR] Avaliação não encontrada.")
+    return rating
 
-# @router.post("/users/{user_id}/items/", response_model=schemas.Item)
-# def create_item_for_user(
-#     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
-# ):
-#     return crud.create_user_item(db=db, item=item, user_id=user_id)
+@router.delete("/ratings/{id}" , summary="Deleta a avaliacao com o id especificado")
+def delete_rating(db: Session = Depends(get_db) , id = id):
+    
+    rating = rating_delete(db=db, id = id) 
+    if rating is None:
+        raise HTTPException(status_code=400, detail=" [ERROR]  Avaliação não existe para ser apagada da base.")
+    return rating
