@@ -16,6 +16,18 @@ USERNAME = <your_username>
 PASSWORD = <your_password>
 ```
 
+Para a criação da base de dados no MySQL é necessário rodar o seguinte código:
+```bash
+chmod +x config_database.sh
+./config_database.sh
+```
+
+Caso ocorra alguma falha com o arquivo acima você pode rodar o script SQL no MySQL Workbench:
+```bash
+script_sql.sql
+```
+
+
 Para rodar o programa use:
 
 ```bash
@@ -26,4 +38,4 @@ O diagrama relacional da nossa base de dados está representado abaixo:
 <img src="diagrama_r.png"/>
 
 ### Vídeo demonstração do funcionamento
-Link : https://youtu.be/Nv5XD2XsCIU
+Link : https://youtu.be/j6QH8KbigqA
