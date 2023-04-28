@@ -21,6 +21,33 @@ def get_db():
 
 @router.get("/ratings/", response_model=List[Rating] , summary="Retorna todas as avaliações da base de dados")
 def read_ratings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    '''
+    Retorna as informações de todos as avaliações da base no formato:
+    
+    [\\
+        {\\
+            **"comment"**: "Ótimo filme , chorei muito",\\
+            **"score"**: 5,\\
+            **"movie_id"**: 1,\\
+            **"rating_id"**: 1\\
+        },\\
+        ...\\
+    ]
+
+    Caso a base não possua avaliações , o resultado será uma "vazio".
+    O significado de cada campo retornado pode ser encontrado a seguir:
+
+    - **name**: Título do filme .
+    - **tipo**: Tipo do filmes [Ex : Drama , Romance etc].
+    - **description** : breve sinopse do filme. 
+    - **release_year** : ano de lançamento do filme. 
+    - **director** : diretor do filme.
+    - **length** : duração do filme em minutos.
+    - **movie_id** : identifiação atribuida automaticamente pelo banco de dados.
+    - **rating** : lista com as avaliações dada para esse filme.
+
+    '''
+
 
     ratings = get_ratings(db, skip=skip, limit=limit)     
     return ratings
