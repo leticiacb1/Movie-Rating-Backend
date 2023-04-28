@@ -10,14 +10,18 @@ Crie um ambiente virtual e instale as bibliotecas necesssárias:
 pip install -r requirements.txt
 ```
 
-É necessário também a criação de um arquivo `.env` com os caminhos globais para os arquivos `db_filmes.json` e `db_avaliacao.json`. 
-O conteúdo mínimo desses dois arquivos deve ser a variável responsável pelo autoincremento dos ids. Conteúdo mínimo, demonstrado abaixo:
-```python
-{
-  "count_id": 0
-}
+É necessário também a criação de um arquivo `.env` com suas crecenciais de utilização do MySQL. 
+```bash
+USERNAME = <your_username>
+PASSWORD = <your_password>
 ```
 
+Para rodar o programa use:
+
+```bash
+python main.py
+```
+O diagrama relacional da nossa base de dados está representado abaixo:
 
 <img src="diagrama_r.png"/>
 
